@@ -1,12 +1,22 @@
 from djongo import models
+from djongo.models import forms
 
 
-class DeviceType(models.Model):
+class DeviceTypes(models.Model):
     device_type = models.CharField(max_length=100)
-    commands = models.ArrayModelField(model_container='Command')
+    commands = models.ArrayModelField(model_container='CommandModel')
+
+    def __string__(self):
+        return self.device_type
 
 
-class Command(models.Model):
+class DeviceTypeForm(forms.ModelForm):
+    class META:
+        model = DeviceTypes
+        fields = ('device_type', 'commands')
+
+
+class CommandModel(models.Model):
     command_name = models.CharField(max_length=100)
     command_string = models.TextField()
 
@@ -14,9 +24,28 @@ class Command(models.Model):
         abstract = True
 
 
-class DeviceModel(models.Model):
-    device_name = models.CharField(max_length=100)
+class CommandForm(forms.ModelForm):
+    class META:
+        model = CommandModel
+        fields = ('command_name', 'command_string')
+
+
+class Devices(models.Model):
+    name = models.CharField(max_length=100)
     mac_address = models.CharField(max_length=100)
-    device_IP = models.CharField(max_length=100)
-    device_type = models.ForeignKey('DeviceType', on_delete=models.CASCADE)
-    device_status = models.CharField(max_length=100)
+    ip = models.CharField(max_length=100)
+    device_type = models.ForeignKey(
+        'DeviceTypes', related_name='devices', on_delete=models.CASCADE)
+    status = models.CharField(max_length=100)
+
+    def __string__(self):
+        return self.name
+
+
+class DeviceModelForm(forms.ModelForm):
+    class META:
+        model = Devices
+        fields = (
+            'device_name', 'mac_address', 'device_IP', 'device_type',
+            'device_status'
+        )
