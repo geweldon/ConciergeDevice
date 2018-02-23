@@ -1,5 +1,5 @@
 from graphene_django import DjangoObjectType
-from models import Devices, DeviceTypes, CommandModel
+from .models import Devices, DeviceTypes, CommandModel
 import graphene
 
 
