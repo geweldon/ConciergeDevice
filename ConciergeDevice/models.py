@@ -2,33 +2,36 @@ from djongo import models
 from djongo.models import forms
 
 
-class DeviceTypes(models.Model):
-    device_type = models.CharField(max_length=100)
-    commands = models.ArrayModelField(model_container='CommandModel')
-
-    def __string__(self):
-        return self.device_type
-
-
-class DeviceTypeForm(forms.ModelForm):
-    class META:
-        model = DeviceTypes
-        fields = ('device_type', 'commands')
-
 
 class CommandModel(models.Model):
     command_name = models.CharField(max_length=100)
     command_string = models.TextField()
+    command_message = models.CharField(max_length=100)
 
     class Meta:
         abstract = True
 
 
 class CommandForm(forms.ModelForm):
-    class META:
+    class Meta:
         model = CommandModel
         fields = ('command_name', 'command_string')
 
+
+class DeviceTypes(models.Model):
+    device_type = models.CharField(max_length=100)
+    device_handler = models.CharField(max_length=100)
+    commands = models.ArrayModelField(model_container=CommandModel,
+                                        model_form_class=CommandForm)
+
+    def __string__(self):
+        return self.device_type
+
+
+class DeviceTypeForm(forms.ModelForm):
+    class Meta:
+        model = DeviceTypes
+        fields = ('device_type', 'commands')
 
 class Devices(models.Model):
     name = models.CharField(max_length=100)
