@@ -25,7 +25,7 @@ class DeviceTypes(models.Model):
                                         model_form_class=CommandForm)
 
     def __string__(self):
-        return self.device_type
+        return '%s' % self.device_type
 
 
 class DeviceTypeForm(forms.ModelForm):
@@ -42,7 +42,7 @@ class Devices(models.Model):
     status = models.CharField(max_length=100)
 
     def __string__(self):
-        return self.name
+        return '%s' % self.name
 
 
 class DeviceModelForm(forms.ModelForm):
