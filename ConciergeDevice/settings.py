@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'ConciergeDevice.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'Concierge',
+        'NAME': 'ConciergeDevice',
     }
 }
 
