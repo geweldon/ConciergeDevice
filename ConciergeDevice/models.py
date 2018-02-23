@@ -15,7 +15,7 @@ class CommandModel(models.Model):
 class CommandForm(forms.ModelForm):
     class Meta:
         model = CommandModel
-        fields = ('command_name', 'command_string')
+        fields = ('command_name', 'command_string', 'command_message')
 
 
 class DeviceTypes(models.Model):
@@ -31,7 +31,7 @@ class DeviceTypes(models.Model):
 class DeviceTypeForm(forms.ModelForm):
     class Meta:
         model = DeviceTypes
-        fields = ('device_type', 'commands')
+        fields = ('device_type', 'device_handler', 'commands')
 
 class Devices(models.Model):
     name = models.CharField(max_length=100)
