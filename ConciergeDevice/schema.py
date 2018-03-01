@@ -2,7 +2,7 @@ from graphene_django import DjangoObjectType
 from .models import Devices, DeviceTypes, CommandModel
 import graphene
 import requests
-import device_handlers
+from . import device_handlers
 
 
 class Device(DjangoObjectType):
@@ -29,18 +29,18 @@ class SendCommand(graphene.Mutation):
     ok = graphene.Boolean()
     response = graphene.String()
 
-    def mutate(self, info, **args):
-        id = args.get('device_id')
-        command = args.get('command')
-        arguments = args.get('arguments')
+    def mutate(self, info, device_id, command, arguments):
+        id = device_id
+        command = command
+        arguments = arguments
 
         device = Devices.objects.select_related('device_type').get(pk=id)
-        handler = device.device_type.device_handler
-        handler = handler.format(device, command, arguments)
+        handler = getattr(device_handlers, device.device_type.device_handler)
 
-        request = eval(handler)
+        request = handler(device, command, arguments)
         ok = request.status_code == requests.codes.ok
         response = request.text
+        handler(device, command, arguments)
 
         return SendCommand(ok=ok, response=response)
 
