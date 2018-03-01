@@ -24,8 +24,8 @@ class DeviceTypes(models.Model):
     commands = models.ArrayModelField(model_container=CommandModel,
                                         model_form_class=CommandForm)
 
-    def __string__(self):
-        return '%s' % self.device_type
+    def __str__(self):
+        return self.device_type
 
 
 class DeviceTypeForm(forms.ModelForm):
@@ -41,8 +41,8 @@ class Devices(models.Model):
         'DeviceTypes', related_name='devices', on_delete=models.CASCADE)
     status = models.CharField(max_length=100)
 
-    def __string__(self):
-        return '%s' % self.name
+    def __str__(self):
+        return '%s %s %s' % (self.name, self.mac_address, self.device_type)
 
 
 class DeviceModelForm(forms.ModelForm):
