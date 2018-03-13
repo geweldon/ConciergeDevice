@@ -49,7 +49,7 @@ class SendCommand(graphene.Mutation):
     class Arguments:
         device_id = graphene.Int(required=True)
         command = graphene.String(required=True)
-        arguments = graphene.String(required=False)
+        arguments = graphene.List(graphene.String())
 
     ok = graphene.Boolean()
     response = graphene.String()
