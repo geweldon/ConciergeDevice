@@ -7,14 +7,12 @@ def commandSelector(commands, cmd):
     return None
 
 def stateUpdater(response, device, *args, **kwargs):
-    res = response.json()['success']
+    res = response.json()["success"]
+    status = any(res.values())
 
-    if any(res):
-        device.status = "True"
-        device.save()
-    else:
-        device.status = "False"
-        device.save()
+    if status != device.status:
+        device.status = status
+        device.save(update_fields=['status'])
 
     pass
 
