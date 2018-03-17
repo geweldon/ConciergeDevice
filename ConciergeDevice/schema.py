@@ -53,6 +53,7 @@ class SendCommand(graphene.Mutation):
 
     ok = graphene.Boolean()
     response = graphene.String()
+    status = graphene.String()
 
     def mutate(self, info, device_id, command, arguments):
         id = device_id
@@ -65,9 +66,9 @@ class SendCommand(graphene.Mutation):
         request = handler(device, command, arguments)
         ok = request.status_code == requests.codes.ok
         response = request.text
-        handler(device, command, arguments)
+        status = device.status
 
-        return SendCommand(ok=ok, response=response)
+        return SendCommand(ok=ok, response=response, status=status)
 
 
 class Mutation(graphene.ObjectType):
